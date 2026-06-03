@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="it.finmatica.history.records.ui.zk.action.HistoryRecordsVerifyAction">
+   <implementation class="it.finmatica.history.records.ui.zk.action.HistoryRecordsVerifyAction"/>
+   <service>
+      <provide interface="org.adempiere.webui.action.IAction"/>
+   </service>
+</scr:component>

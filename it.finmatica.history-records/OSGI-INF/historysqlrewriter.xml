@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="it.finmatica.history-records">
+   <implementation class="it.finmatica.history.records.extension.HistorySQLRewriter"/>
+   <service>
+      <provide interface="org.compiere.dbPort.ISQLStatementRewriter"/>
+   </service>
+   <property name="priority" type="String" value="10"/>
+   <property name="service.rankig" type="Integer" value="10"/>
+</scr:component>

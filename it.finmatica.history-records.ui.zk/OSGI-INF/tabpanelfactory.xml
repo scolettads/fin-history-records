@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- scoletta@ads.it - History Records Plugin -->
+<!-- vanilla 13: ITabpanelFactory non esiste → IADTabPanelFactory (org.adempiere.webui.factory) -->
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="it.finmatica.history-records.ui.zk.tabpanel">
+   <implementation class="it.finmatica.history.records.ui.zk.extension.HSTTabpanelFactory"/>
+   <property name="service.ranking" type="Integer" value="10"/>
+   <service>
+      <provide interface="org.adempiere.webui.factory.IADTabPanelFactory"/>
+   </service>
+</scr:component>

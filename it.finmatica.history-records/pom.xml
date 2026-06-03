@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.idempiere</groupId>
+		<artifactId>org.idempiere.parent</artifactId>
+		<version>${revision}</version>
+		<relativePath>../org.idempiere.parent/pom.xml</relativePath>
+	</parent>
+	<artifactId>it.finmatica.history-records</artifactId>
+	<packaging>eclipse-plugin</packaging>
+
+	<!--
+	  jsqlparser-idempiere.jar è un fork privato Finmatica di JSQLParser,
+	  non disponibile in Maven Central. Viene conservato in local-maven-repo/
+	  (committato in git) e copiato in lib/ durante la fase generate-sources,
+	  DOPO che il parent pom abbia ripulito lib/*.jar nella fase validate.
+	  Pattern identico a org.adempiere.report.jasper.library.
+	-->
+	<repositories>
+		<repository>
+			<id>local-project-repo</id>
+			<url>file://${project.basedir}/local-maven-repo</url>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>ignore</checksumPolicy>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-embedded-jars</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>it.finmatica</groupId>
+									<artifactId>jsqlparser-idempiere</artifactId>
+									<version>4.0</version>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>lib</outputDirectory>
+							<stripVersion>true</stripVersion>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

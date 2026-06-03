@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>it.finmatica</groupId>
+  <artifactId>jsqlparser-idempiere</artifactId>
+  <version>4.0</version>
+  <packaging>jar</packaging>
+  <description>Finmatica fork of JSQLParser - embedded in it.finmatica.history-records</description>
+</project>

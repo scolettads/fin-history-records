@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="it.finmatica.history-records-feature"
+      label="Finmatica History Records (Time Machine)"
+      version="13.0.0.qualifier"
+      provider-name="Finmatica">
+
+   <description>
+      Aggregator feature for the Finmatica History Records plug-in suite.
+      Provides record-level history tracking, time-travel queries and a toolbar action
+      to create history snapshots of any iDempiere record.
+   </description>
+
+   <copyright>
+      Copyright (C) Finmatica S.p.A. - https://www.finmatica.it
+   </copyright>
+
+   <license url="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">
+      GNU General Public License v2 (same as iDempiere core)
+   </license>
+
+   <plugin
+         id="it.finmatica.history-records"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <!-- scoletta@ads.it - History Records Plugin -->
+   <plugin
+         id="it.finmatica.history-records.ui.zk"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
