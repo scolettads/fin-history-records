@@ -35,15 +35,87 @@ versioned masters (price lists, BOMs, structures, taxes) and audit trails.
 
 ## Features
 
-| Feature | Status in this release | Notes |
-|---|---|---|
-| `HST_HistoryMode` flag on `AD_Table` (None / TimeMachine / Storicized / Versioned / Limited) | ✅ | dictionary 2pack |
-| Automatic creation of `*_HST` shadow tables when `HST_HistoryMode` is set | ✅ | via model validator at table activation |
-| Trigger-style mirroring of `INSERT/UPDATE/DELETE` to `*_HST` | ✅ | `HistoryRecordEventHandler` |
-| Toolbar action **Create Historical Record** | ✅ | bundle `…ui.zk` |
-| Transparent Time Machine query rewriting at JDBC layer | ✅ (requires upstream PR) | hook on `Convert.rewriteStatements()` |
-| Lookup cache invalidation when history mode is active | ✅ (requires upstream PR) | hook on `MLookup` |
-| Form-level read-only mode when reading historical data | ✅ (requires upstream PR) | hook on `GridField.isEditable()` |
+The plug-in answers a simple question that every long-lived ERP eventually
+faces:
+
+> **What did this record look like back then?**
+
+When you reprint an invoice issued three years ago, the customer's tax ID
+must appear *as it was on that invoice's date* — not as it is today.
+When you audit a sales order from 2022, you want to see the price list, the
+discount, and the shipping address that applied *at that time*, not the
+latest version. Without history tracking, you only ever see the current
+state: each `UPDATE` to the row destroys the previous value forever.
+
+This plug-in adds **transparent time-travel** to any iDempiere table of
+your choice.
+
+### A worked example — when a customer changes Tax ID
+
+Acme S.p.A. is a customer with `C_BPartner_ID = 123` and
+`TaxId = 'IT01234567890'`. On 2024-06-01, after a corporate restructuring,
+Acme's tax ID changes to `IT09876543210`. You update the record in
+iDempiere.
+
+**Without the plug-in**, the table only remembers the current value:
+
+```sql
+SELECT TaxId FROM C_BPartner WHERE C_BPartner_ID = 123;
+-- → IT09876543210
+```
+
+If you now reprint invoice `INV-2024-0021` dated **2024-02-15**, the new
+tax ID appears on it — which is legally wrong: the invoice was issued
+under the *old* ID, the new ID didn't exist yet.
+
+**With the plug-in installed**, after flagging `C_BPartner` as historicized,
+the database keeps both versions side by side in a shadow table
+`C_BPartner_HST`:
+
+| HSTFromDate | HSTToDate | TaxId            |
+|-------------|-----------|------------------|
+| 2020-01-01  | 2024-05-31| IT01234567890    |
+| 2024-06-01  | *(null)*  | IT09876543210    |
+
+The reprint code carries the invoice date and the same identical query is
+executed, but in *time-travel mode*:
+
+```sql
+SELECT TaxId FROM C_BPartner WHERE C_BPartner_ID = 123;
+-- with HistorySelectionData = 2024-02-15
+-- → IT01234567890   (the correct historical value)
+```
+
+The application code is **unchanged**. The plug-in rewrites the SQL on the
+fly to look up `C_BPartner_HST` filtered by the validity interval. The same
+mechanism works automatically on lookups (combo boxes), info windows,
+reports, callouts, search popups — anywhere in iDempiere where a
+`SELECT` runs.
+
+### What's in the box
+
+| Capability | What it does |
+|---|---|
+| **One-click historicization** | Flag a table with *History Mode* = `Time Machine` in the dictionary. The plug-in creates the shadow `_HST` table for you and starts mirroring every insert/update/delete automatically. |
+| **Transparent time-travel reads** | Any `SELECT` on a historicized table is rewritten to return the version valid at the chosen business date. Existing screens, reports and processes work as-is, no migration. |
+| **Manual snapshot** | The *Create Historical Record* toolbar action lets the operator freeze the current row at a chosen business date. Useful for legal archiving, slow-changing dimensions, versioned masters (price lists, BOMs, tax rates). |
+| **Automatic date-source per document** | A configuration table declares which date drives history reads on each window. E.g. "when opening a Sales Order, resolve all lookups at the order's date, not at today's date." |
+| **Read-only protection in past mode** | When you're looking at historicized data the form goes read-only, so the history can't be corrupted by accident. |
+
+### What's not yet ported in this community release
+
+The original Finmatica edition includes three extra UI features that have
+not been ported to this first community release. Workarounds are listed
+where applicable.
+
+* **Time Machine date-picker panel** — a sticky toolbar widget to choose
+  the time-travel date on the fly. *Workaround*: the date can be set via
+  Java API (`HistorySelectionData.setCurrent(date)`) or via a custom
+  callout.
+* **Verify Change Impact info window** — a screen that lists which other
+  records depend on a historicized one. *No workaround in this release.*
+* **Tree Maintenance UI** — a tree-aware version-management screen for
+  hierarchical data. *No workaround in this release.*
 
 ---
 
