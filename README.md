@@ -44,9 +44,6 @@ versioned masters (price lists, BOMs, structures, taxes) and audit trails.
 | Transparent Time Machine query rewriting at JDBC layer | ✅ (requires upstream PR) | hook on `Convert.rewriteStatements()` |
 | Lookup cache invalidation when history mode is active | ✅ (requires upstream PR) | hook on `MLookup` |
 | Form-level read-only mode when reading historical data | ✅ (requires upstream PR) | hook on `GridField.isEditable()` |
-| Time Machine date-picker UI panel | ⏸ not yet ported | available in original Finmatica edition |
-| Verify Change Impact info window | ⏸ not yet ported | available in original Finmatica edition |
-| Tree Maintenance UI | ⏸ not yet ported | available in original Finmatica edition |
 
 ---
 
