@@ -2,7 +2,7 @@
 <feature
       id="it.finmatica.history-records-feature"
       label="Finmatica History Records (Time Machine)"
-      version="13.0.0.qualifier"
+      version="14.0.0.qualifier"
       provider-name="Finmatica">
 
    <description>

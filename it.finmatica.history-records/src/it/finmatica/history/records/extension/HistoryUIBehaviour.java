@@ -34,43 +34,55 @@ import org.compiere.model.Lookup;
 import org.compiere.model.MLookup;
 import org.compiere.model.MLookupInfo;
 
+import it.finmatica.history.records.internal.compiere.history.HistorySelectionData;
 import it.finmatica.history.records.sql.ADHistoryReplacer;
 
+// s.coletta@ads.it 2026-08-27
 public class HistoryUIBehaviour implements IUIBehaviour
 {
 
+	/**
+	 * Returns a date-scoped cache key suffix when the time machine is active on
+	 * the lookup's target table.  Each history date gets its own isolated bucket
+	 * so caching stays active; returning null in normal mode is a zero-overhead
+	 * no-op (identical to vanilla iDempiere behaviour).
+	 */
 	@Override
-	public Boolean isLookupCacheable(Lookup lookup, MLookupInfo lookupInfo)
+	public String getLookupCacheKeySuffix(Lookup lookup, MLookupInfo lookupInfo)
 	{
-		String tableName = null;
-		
-		if(lookupInfo == null)
-			lookupInfo = ((MLookup)lookup).getLookupInfo();
-		
-		if(lookupInfo != null)
-		{
-			tableName = lookupInfo.TableName;
-		}
-		
-		if(tableName != null)
-		{
-			return !ADHistoryReplacer.hasHistory(tableName);
-		}
-		
-		return Boolean.TRUE;
-	}
+		HistorySelectionData hsd = HistorySelectionData.getCurrent();
+		if (hsd == null || hsd.isDisableTimeMachine() || hsd.getHistoryDate() == null)
+			return null;
 
-	@Override
-	public Boolean isEditable(Properties ctx, GridTab tab)
-	{
+		if (lookupInfo == null && lookup instanceof MLookup)
+			lookupInfo = ((MLookup) lookup).getLookupInfo();
+
+		String tableName = (lookupInfo != null) ? lookupInfo.TableName : null;
+		if (tableName != null && ADHistoryReplacer.hasHistory(tableName))
+			return "HST@" + hsd.getHistoryDate().getTime();
+
 		return null;
 	}
 
+	/** Read-only when the time machine is active (veto semantics: false = deny). */
 	@Override
-	public Boolean isEditable(Properties ctx, GridField field,
+	public boolean isTabEditable(Properties ctx, GridTab tab)
+	{
+		HistorySelectionData hsd = HistorySelectionData.getCurrent();
+		if (hsd == null || hsd.isDisableTimeMachine() || hsd.getHistoryDate() == null)
+			return true;
+		return false;
+	}
+
+	/** Read-only when the time machine is active (veto semantics: false = deny). */
+	@Override
+	public boolean isFieldEditable(Properties ctx, GridField field,
 			boolean checkContext, boolean isGrid)
 	{
-		return null;
+		HistorySelectionData hsd = HistorySelectionData.getCurrent();
+		if (hsd == null || hsd.isDisableTimeMachine() || hsd.getHistoryDate() == null)
+			return true;
+		return false;
 	}
 
 }

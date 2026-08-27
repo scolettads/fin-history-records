@@ -26,10 +26,10 @@
 package it.finmatica.history.records.internal.idempiere.util.model;
 
 import org.adempiere.model.ImportValidator;
-import org.compiere.model.FactsValidator;
 import org.compiere.model.MClient;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
+import org.idempiere.acct.base.model.FactsValidator;
 
 import it.finmatica.history.records.internal.idempiere.util.model.AbstractBootstrapValidator.BootstrappableValidator;
 
@@ -118,20 +118,7 @@ public abstract class AbstractBoostrappableValidator implements ModelValidator,B
 			engine.addDocValidate(sTableName, mVal);
 		}
 	}
-	
-	public void addFactsValidate(ModelValidationEngine engine,String sTableName)
-	{
-		FactsValidator	mVal = getFactsValidator();
-		
-		if(mVal instanceof AbstractBootstrapValidator)
-		{
-			((AbstractBootstrapValidator) mVal).addFactsValidate(engine, sTableName);
-		}
-		else
-		{
-			engine.addFactsValidate(sTableName, mVal);
-		}
-	}
+
 	
 	public void addImportValidate(ModelValidationEngine engine,String sTableName)
 	{

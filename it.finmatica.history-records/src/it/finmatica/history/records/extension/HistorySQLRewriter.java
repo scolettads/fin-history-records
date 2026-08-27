@@ -140,17 +140,25 @@ public class HistorySQLRewriter implements ISQLStatementRewriter {
 	}
 	
 	public boolean isTimeMachineDisabled() {
-		
-		if(timeMachineDisabled == null)
-			timeMachineDisabled = HSTSysConfig.isTimeMachineDisabled(); // Teniamo cache per evitare switch di selection data non necessari. 
-		
+
+		if(timeMachineDisabled != null)
+			return timeMachineDisabled;
+		// s.coletta@ads.it 2026-08-27 - break re-entrant recursion: HSTSysConfig sets
+		// DISABLE_TIMEMACHINE before calling MSysConfig, which re-enters here via DB layer;
+		// treat infra queries as if the time machine is disabled to avoid stack overflow.
+		HistorySelectionData hsd = HistorySelectionData.getCurrent();
+		if(hsd != null && hsd.isDisableTimeMachine())
+			return true;
+		timeMachineDisabled = HSTSysConfig.isTimeMachineDisabled();
 		return timeMachineDisabled;
 	}
 
 	@Override
 	public boolean rewriteIsCacheable() {
-		
-		// Cacheabile se disabilitato, altrimento no
+
+		HistorySelectionData hsd = HistorySelectionData.getCurrent();
+		if(hsd != null && hsd.isDisableTimeMachine())
+			return true;
 		return isTimeMachineDisabled();
 	}
 	

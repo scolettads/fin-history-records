@@ -31,8 +31,9 @@ import java.util.List;
 
 import org.adempiere.model.ImportValidator;
 import org.adempiere.process.ImportProcess;
-import org.compiere.acct.Fact;
-import org.compiere.model.FactsValidator;
+import org.idempiere.acct.doc.Fact;
+import org.idempiere.acct.event.FactsValidationEngine;
+import org.idempiere.acct.base.model.FactsValidator;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MClient;
 import org.compiere.model.ModelValidationEngine;
@@ -211,14 +212,7 @@ public abstract class AbstractBootstrapValidator implements ModelValidator,Facts
 		}
 	}
 	
-	public void addFactsValidate(ModelValidationEngine engine,String sTableName)
-	{
-		if(m_setFactsValidator.contains(sTableName) == false)
-		{
-			m_setFactsValidator.add(sTableName);
-			engine.addFactsValidate(sTableName, this);
-		}
-	}
+
 	
 	public void addImportValidate(ModelValidationEngine engine,String sTableName)
 	{

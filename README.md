@@ -15,21 +15,27 @@ A "Create Historical Record" toolbar button lets the operator snapshot the
 state of a row at a given business date — useful for legal archiving,
 versioned masters (price lists, BOMs, structures, taxes) and audit trails.
 
+---
+
+## References
+
+* **Plug-in repository**: <https://github.com/scolettads/fin-history-records>
 
 ---
 
 ## Table of contents
 
-1. [Features](#features)
-2. [Architecture overview](#architecture-overview)
-3. [Requirements](#requirements)
-4. [Build](#build)
-5. [Install](#install)
-6. [Usage](#usage)
-7. [Bundle layout](#bundle-layout)
-8. [Compatibility matrix](#compatibility-matrix)
-9. [Authors & contributors](#authors--contributors)
-10. [License](#license)
+1. [References](#references)
+2. [Features](#features)
+3. [Architecture overview](#architecture-overview)
+4. [Requirements](#requirements)
+5. [Build](#build)
+6. [Install](#install)
+7. [Usage](#usage)
+8. [Bundle layout](#bundle-layout)
+9. [Compatibility matrix](#compatibility-matrix)
+10. [Authors & contributors](#authors--contributors)
+11. [License](#license)
 
 ---
 

@@ -2,16 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: History-records.ui.zk
 Bundle-SymbolicName: it.finmatica.history-records.ui.zk
-Bundle-Version: 13.0.0.qualifier
+Bundle-Version: 14.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Require-Bundle: org.adempiere.plugin.utils;bundle-version="13.0.0",
- org.adempiere.base;bundle-version="13.0.0",
+Require-Bundle: org.adempiere.plugin.utils;bundle-version="14.0.0",
+ org.adempiere.base;bundle-version="14.0.0",
  org.eclipse.osgi,
- org.adempiere.ui.zk;bundle-version="13.0.0",
- org.adempiere.ui;bundle-version="13.0.0",
+ org.adempiere.ui.zk;bundle-version="14.0.0",
+ org.adempiere.ui;bundle-version="14.0.0",
  zul;bundle-version="0.0.0",
  zk;bundle-version="0.0.0",
- it.finmatica.history-records;bundle-version="13.0.0"
+ it.finmatica.history-records;bundle-version="14.0.0"
 Service-Component: OSGI-INF/ToolbarbuttonFactory.xml,
  OSGI-INF/ToolbarbuttonHSTVerifyComponent.xml,
  OSGI-INF/hstprocessfactoryzk.xml,
