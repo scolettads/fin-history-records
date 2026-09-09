@@ -95,16 +95,17 @@ public class HistoryRecordEventHandler extends AbstractEventHandler
 		{
 			RecordHST recordHST = new RecordHST(null,poHST);
 			
+			// s.coletta@ads.it 2026-09-09
 			if(levelHistory > HSTPO.HST_LVL_BASE
-					&& topic.equals(IEventTopics.PO_BEFORE_CHANGE) 
-					&& HSTPO.getHSTActualRecord(poHST).equals(HSTPO.HSTActualRcd_Yes)
-					&& SavedFromUI.isSavedFromUI(poHST) )
+					&& topic.equals(IEventTopics.PO_BEFORE_CHANGE)
+					&& HSTPO.getHSTActualRecord(poHST).equals(HSTPO.HSTActualRcd_Yes))
 			{
 				int nColumn = poHST.get_ColumnCount();
 				for(int index = 0 ; index<nColumn;index++)
 				{
-					if(poHST.get_ColumnName(index).equals(HSTPO.COLUMNNAME_HSTFromDate) 
-							|| poHST.get_ColumnName(index).equals(HSTPO.COLUMNNAME_HSTToDate) )
+					if(poHST.get_ColumnName(index).equals(HSTPO.COLUMNNAME_HSTFromDate)
+							|| poHST.get_ColumnName(index).equals(HSTPO.COLUMNNAME_HSTToDate)
+							|| poHST.get_ColumnName(index).equals(HSTPO.COLUMNNAME_HSTActualRecord))
 						continue;
 					
 					if(poHST.is_ValueChanged(index))
@@ -322,9 +323,9 @@ public class HistoryRecordEventHandler extends AbstractEventHandler
 				
 			}
 
-			if(levelHistory > HSTPO.HST_LVL_BASE 
-					&& poHST.is_ValueChanged(HSTPO.COLUMNNAME_HSTActualRecord) 
-					&& SavedFromUI.isSavedFromUI(poHST)
+			// s.coletta@ads.it 2026-09-09
+			if(levelHistory > HSTPO.HST_LVL_BASE
+					&& poHST.is_ValueChanged(HSTPO.COLUMNNAME_HSTActualRecord)
 					&& topic.equals(IEventTopics.PO_BEFORE_CHANGE))
 			{
 				throw new AdempiereException(Msg.getMsg(ctx,HSTMessages.HST_ERR_NO_MANUAL_MODIFY));
